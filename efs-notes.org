@@ -1,0 +1,66 @@
+* Emacs from scratch notes
+
+** Part 1: Packages and basic setup
+- help commands
+  - all start with =c-h=
+- =c-x= =c-f=  find file
+- =c-x c-b= find buffer
+
+** Part 2: UI tweaks
+- =c-x c-e= evaluate expression under point
+- how do I eval a whole buffer?
+- `use-package` has a `:diminish` option which stops hover info going into messages
+
+** Part 3: Keybindings and evil mode
+Built in ways to set keymaps:
+#+begin_src emacs-lisp
+  ;; create global keymap
+  (global-set-key (kbd "C-x y z") 'function)
+  ;; create mode keymap
+  (define-key mode-name-map (kbd "C-x y z") 'function)
+#+end_src
+
+But normally we don't define these directly with `use-package` or `general.el`
+
+** Part 4:  Projectile and Magit
+- Projectile is a suite of commands like fzf in vim, all keybinds start with =C-c p=
+- Open Magit status buffer with =C-x g=, everything happens from there
+- Magit keybinds are mostly the same as fugitive, but will show help with =?= or with a partial keycombo, for example =c= will open completions and =c= again will commit
+- Magit provides a =Instant Fixup= and =Branch spin off= commands on top of what git provides and they look super useful
+- =Forge= looks worth setting up for creating/editing PRs and issues from emacs
+
+** Part 5:  Org Mode basics
+- create link with =c-c c-l= (the underlying text is =[[link][description]]=)
+- follow link with =c-c c-o=
+- surrounding astrixes make *bold* and slashes make /italic/
+- headings with leading astrix(es) =*=
+- ordered, unordered, and check lists the same as markdowns
+- tables are same as markdown
+- code blocks:
+#+begin_src emacs-lisp
+(message "run\n me")
+#+end_src
+
+
+** NEXT_UP Part 6:  Organise your life with Org Mode
+- =M-x org-agenda a= to show agenda
+- =C-c C-t= change task states
+- =C-c C-s= schedule a task (=shift <arrow-key>= to select calendars)
+
+#+begin_src emacs-lisp
+(setq org-todo-keywords
+  ;; done states are after the "|", key in bracket is the shortcut for this state
+  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")))
+#+end_src
+
+- up to 25mins in the video
+
+** Misc Thoughts
+*** Org
+- the =S-M-RET= shortcut to create a new checklist item sucks, something better
+- the =C-c C-x C-b= shortcut to toggle checklists sucks, and doesn't even add if required
+- org agenda looses all evil keybinds, can I put some back it?
+
+*** Magit
+- it seems mostly intuitive but I should probably practice a bit more, just get the basics done
+
