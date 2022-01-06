@@ -60,6 +60,17 @@
 (use-package doom-themes
   :init (load-theme 'doom-one t))
 
+
+
+(setq user-emacs-directory "~/.cache/emacs")
+(use-package no-littering)
+;; no-littering doesn't set this by default so we must place
+;; auto save files in the same path as it uses for sessions
+(setq auto-save-file-name-transforms
+      `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+
+
+
 (column-number-mode)
 (global-display-line-numbers-mode t)
 
@@ -177,6 +188,11 @@
   :config
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys))
+
+(use-package evil-surround
+  :ensure t
+  :config
+  (global-evil-surround-mode 1))
 
 (use-package hydra)
 
@@ -313,7 +329,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(undo-tree pdf-tools evil-org gnuplot evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
+   '(no-littering evil-surround undo-tree pdf-tools evil-org gnuplot evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
