@@ -3,16 +3,20 @@
 ;; NOTE: The first time you load your configuration on a new machine, you'll
 ;; need to run the following command interactively so that mode line icons
 ;; display correctly:
-;;
+
 ;; M-x all-the-icons-install-fonts
-
-(use-package all-the-icons)
-
-(use-package doom-themes
-  :init (load-theme 'doom-one t))
 
 ;; The default is 800 kilobytes.  Measured in bytes.
 (setq gc-cons-threshold (* 50 1000 1000))
+
+;;; Native comp setup -----------------------
+;; Silence compiler warnings as they can be pretty disruptive
+(setq native-comp-async-report-warnings-errors nil)
+
+;; Set the right directory to store the native comp cache
+(if (boundp 'native-comp-eln-load-path) 
+    (add-to-list 'native-comp-eln-load-path
+		 (expand-file-name "eln-cache/" user-emacs-directory)))
 
 ;; visual stuff
 (setq inhibit-startup-message t)
@@ -50,6 +54,11 @@
 
 (require 'use-package)
 (setq use-package-always-ensure t)
+
+
+(use-package all-the-icons)
+(use-package doom-themes
+  :init (load-theme 'doom-one t))
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
