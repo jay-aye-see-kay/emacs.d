@@ -42,7 +42,7 @@ But normally we don't define these directly with `use-package` or `general.el`
 #+end_src
 
 
-** NEXT_UP Part 6:  Organise your life with Org Mode
+** Part 6:  Organise your life with Org Mode
 - =M-x org-agenda a= to show agenda
 - =C-c C-t= change task states
 - =C-c C-s= schedule a task (=shift <arrow-key>= to select calendars)
@@ -53,9 +53,45 @@ But normally we don't define these directly with `use-package` or `general.el`
   '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")))
 #+end_src
 
-- up to 25mins in the video
+*** Making a custom agenda
+- look up =org-agenda-custom-commands=
+
+*** Tags
+- add tags to an item with =councel-org-tags=
+- add tags to the =org-tag-alist= variable to predefine them
+- org mode's built in tags inteface is =org-set-tags-command= or =C-c C-q= (but this keybinding doesn't work right now?)
+
+*** Refiling
+#+begin_src emacs-lisp
+  ;; specify files we can refile into, and the heading level we can refile into
+  (setq org-refile-targets
+    '(("Archive.org" :maxlevel . 1)))
+
+  ;; save all org files after refile
+  (advice-add 'org-refile :after 'org-save-all-org-buffers)
+#+end_src
+
+
+*** Capturing and capture templates
+#+begin_src emacs-lisp
+  ;; create a list of capture templates that will be attached to keybinds
+  (setq org-capture-templates
+    '(<list of templates to capture>))
+#+end_src
+
+*** Org habit
+- Comes with org mode, but not enabled by default
+- Create a =Habits.org=
+- Create an item; add recurring schedule, mark it TODO, and add the habit property
+- =org-habit= will add a column to the agenda view showing how you're sticking to the habit
+
+** ON_HOLD Part 7:  Configure everything with Org Mode
+- skipped for now because the lsp bits look more interesting
+
+** IN_PROGRESS Part 8:  Build your own IDE with lsp-mode
 
 ** Misc Thoughts
+*** TODO setup undo tree so I can redo
 *** Org
 - the =S-M-RET= shortcut to create a new checklist item sucks, something better
 - the =C-c C-x C-b= shortcut to toggle checklists sucks, and doesn't even add if required
@@ -64,3 +100,15 @@ But normally we don't define these directly with `use-package` or `general.el`
 *** Magit
 - it seems mostly intuitive but I should probably practice a bit more, just get the basics done
 
+*** Other thoughts
+- pulse on highlight can be implementeding with the built in package =pulse.el='s =(pulse-momentary-highlight-region START END)= [[https://blog.meain.io/2020/emacs-highlight-yanked/][see this blog post about setting it up]]
+
+*** Copy and paste key combos (only in emacs mode)
+- Thought: Should I remap the emacs copy paste keys to interact with the system clipboard and use vim's clipboard as normal? I need to know =C-y= regardless for Ivy mini buffers like =M-x=.
+- Another thought: Evil is already using the system clipboard, do I want that?
+
+| Common Name | Common Key | Emacs Name     | Emacs Key |
+| Cut         | C-x        | Kill           | C-w       |
+| Copy        | C-c        | kill-ring-save | M-w       |
+| Paste       | C-v        | Yank           | C-y       |
+| —           | —          | yank-pop       | M-y       |

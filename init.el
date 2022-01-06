@@ -127,11 +127,17 @@
     "p" '(projectile-switch-project :which-key "switch project")
     "f" '(counsel-find-file :which-key "find files"))
 
+(use-package undo-tree
+  :init
+  (global-undo-tree-mode 1))
+
 (use-package evil
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil) ; may not be as good/consistent so turned off TODO is it worth it?
   (setq evil-want-C-u-scroll t)
+  (setq evil-undo-system 'undo-tree)
+  (setq evil-want-Y-yank-to-eol t)
   :config
   (evil-mode 1)
   (define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state) ; emacs convention, reset/return to "normal mode"
@@ -154,6 +160,14 @@
   (define-key evil-normal-state-map (kbd "C-a") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "C-c +") 'evil-numbers/inc-at-pt)
   (define-key evil-normal-state-map (kbd "C-c -") 'evil-numbers/dec-at-pt))
+
+(use-package evil-org
+  :ensure t
+  :after org
+  :hook (org-mode . (lambda () evil-org-mode))
+  :config
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
 
 (use-package hydra)
 
@@ -223,7 +237,7 @@
                   (org-level-6 . 1.1)
                   (org-level-7 . 1.1)
                   (org-level-8 . 1.1)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face)))
+    (set-face-attribute (car face) nil :font "Fira Sans" :weight 'regular :height (cdr face)))
 
   ;; Ensure that anything that should be fixed-pitch in Org files appears that way
   (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
@@ -243,9 +257,7 @@
   (setq org-log-done 'time)
   (setq org-log-into-drawer t)
 
-  (setq org-agenda-files
-	'("~/.emacs.d/OrgFiles/Tasks.org"
-	  "~/.emacs.d/OrgFiles/Birthdays.org"))
+  (setq org-agenda-files '("~/.emacs.d/OrgFiles/Tasks.org"))
 
   (setq org-todo-keywords
 	'((sequence "TODO(t)" "NEXT_UP(n)" "IN_PROGRESS(p)" "ON_HOLD(h)" "|" "DONE(d!)")))
@@ -266,15 +278,33 @@
 (use-package visual-fill-column
   :hook (org-mode . efs/org-mode-visual-fill))
 
+;; LSP Mode Configuration ------------------------------------------------------
+;; TODO
 
+
+;; My misc other configuration ------------------------------------------------------
+
+;;; Highlight on yank
+;;; note: doesn't work for copying with emacs keybinds
+;;; see: https://blog.meain.io/2020/emacs-highlight-yanked/
+(defun self/evil-yank-advice (orig-fn beg end &rest args)
+  (pulse-momentary-highlight-region beg end)
+  (apply orig-fn beg end args))
+(advice-add 'evil-yank :around 'self/evil-yank-advice)
+
+;; TODO how do I get plots showing inline in org?
+(use-package gnuplot)
+
+;; The stuff emacs put here on it's own ------------------------------------------------------
 ;; I guess I can't get rid of this
+
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
+   '(undo-tree pdf-tools evil-org gnuplot evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
