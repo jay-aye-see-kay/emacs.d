@@ -38,9 +38,8 @@ But normally we don't define these directly with `use-package` or `general.el`
 - tables are same as markdown
 - code blocks:
 #+begin_src emacs-lisp
-(message "run\n me")
+  (message "run\n me")
 #+end_src
-
 
 ** Part 6:  Organise your life with Org Mode
 - =M-x org-agenda a= to show agenda
@@ -48,9 +47,9 @@ But normally we don't define these directly with `use-package` or `general.el`
 - =C-c C-s= schedule a task (=shift <arrow-key>= to select calendars)
 
 #+begin_src emacs-lisp
-(setq org-todo-keywords
-  ;; done states are after the "|", key in bracket is the shortcut for this state
-  '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")))
+  (setq org-todo-keywords
+    ;; done states are after the "|", key in bracket is the shortcut for this state
+    '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")))
 #+end_src
 
 *** Making a custom agenda
@@ -91,7 +90,6 @@ But normally we don't define these directly with `use-package` or `general.el`
 ** IN_PROGRESS Part 8:  Build your own IDE with lsp-mode
 
 ** Misc Thoughts
-*** TODO setup undo tree so I can redo
 *** Org
 - the =S-M-RET= shortcut to create a new checklist item sucks, something better
 - the =C-c C-x C-b= shortcut to toggle checklists sucks, and doesn't even add if required
@@ -112,3 +110,18 @@ But normally we don't define these directly with `use-package` or `general.el`
 | Copy        | C-c        | kill-ring-save | M-w       |
 | Paste       | C-v        | Yank           | C-y       |
 | —           | —          | yank-pop       | M-y       |
+
+*** Org mode format self
+
+Idea is a work in progress and doesn't enforce the heading spacing I want, but it might be what I'm after? Will obviously need to attach this function to some sort of =on-save= event or a keypress.
+
+#+begin_src emacs-lisp
+  ;; This will format the current buffer file but then it's out of
+  ;; sync with the visible buffer and needs to be re-read
+  (org-export-to-file 'org buffer-file-name)
+
+  ;; This will format the current buffer in place without touching the
+  ;; file system so is probably what I want, the only issue I noticed
+  ;; was that it opens a copy of the buffer.
+  (org-export-to-buffer 'org (buffer-name))
+#+end_src
