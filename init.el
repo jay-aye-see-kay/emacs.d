@@ -58,7 +58,7 @@
 
 (use-package all-the-icons)
 (use-package doom-themes
-  :init (load-theme 'doom-one t))
+  :init (load-theme 'doom-one-light t))
 
 
 

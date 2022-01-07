@@ -89,6 +89,23 @@ But normally we don't define these directly with `use-package` or `general.el`
 
 ** IN_PROGRESS Part 8:  Build your own IDE with lsp-mode
 
+*** Base setup
+- base packages are =lsp-mode= and =lsp-ui-mode=
+- =lsp-ivy= provides some symbol search functions
+- =company= provides completion as you type
+- =company-box= makes it looks a bit nicer, things like icons next to comletion items
+- The EFS company setup uses =tab= like VSCode does, not sure this is what I want
+
+*** Language specific setup
+- Most languages need explicit setup for language specific stuff light highlighting, but also manually connected to the lsp
+- TypeScript requires the =typescript-mode= for =ts= and =tsx= files (but no syntax hl for tsx?)
+- =tsx= seems to need =tree-sitter= for syntax highlighting
+- =lsp-mode= works file with both =ts= and =tsx=
+- some langs need a =lsp-<something>= package too
+
+*** DAP mode
+- yeah maybe later
+
 ** Misc Thoughts
 *** Org
 - the =S-M-RET= shortcut to create a new checklist item sucks, something better
