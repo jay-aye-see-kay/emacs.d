@@ -385,6 +385,8 @@
 ;; TODO how do I get plots showing inline in org?
 (use-package gnuplot)
 
+(use-package restclient)
+
 ;; The stuff emacs put here on it's own ------------------------------------------------------
 ;; I guess I can't get rid of this
 
@@ -394,7 +396,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(package-selected-packages
-   '(company-box company tree-sitter-langs tree-sitter typescript-mode lsp-ivy evil-surround no-littering lsp-ui lsp-mode undo-tree pdf-tools evil-org gnuplot evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
+   '(restclient company-box company tree-sitter-langs tree-sitter typescript-mode lsp-ivy evil-surround no-littering lsp-ui lsp-mode undo-tree pdf-tools evil-org gnuplot evil-numbers doom-themes forge evil-magit magit counsel-projectile projectile use-package)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
