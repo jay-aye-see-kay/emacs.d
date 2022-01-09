@@ -5,7 +5,7 @@
   - all start with =c-h=
 - =c-x= =c-f=  find file
 - =c-x c-b= find buffer
-
+  
 ** Part 2: UI tweaks
 - =c-x c-e= evaluate expression under point
 - how do I eval a whole buffer?
@@ -70,7 +70,6 @@ But normally we don't define these directly with `use-package` or `general.el`
   (advice-add 'org-refile :after 'org-save-all-org-buffers)
 #+end_src
 
-
 *** Capturing and capture templates
 #+begin_src emacs-lisp
   ;; create a list of capture templates that will be attached to keybinds
@@ -84,11 +83,36 @@ But normally we don't define these directly with `use-package` or `general.el`
 - Create an item; add recurring schedule, mark it TODO, and add the habit property
 - =org-habit= will add a column to the agenda view showing how you're sticking to the habit
 
-** ON_HOLD Part 7:  Configure everything with Org Mode
+** Part 7:  Configure everything with Org Mode
 - skipped for now because the lsp bits look more interesting
 
-** IN_PROGRESS Part 8:  Build your own IDE with lsp-mode
+*** Org babel 
+=C-c C-c= to execute a code block
+#+begin_src python :results output
+  def greeting():
+      return "Hello"
+  print(greeting())
+#+end_src
 
+#+RESULTS:
+: Hello
+
+- once structured templates are setup =<el TAB= to insert =emacs-lisp=, =<py TAB= to insert python etc.
+  
+*** Tangled org mode files
+- src blocks can be "tangled" from an org file into a config file or program
+- e.g these two block will output =value\=somevalue=:
+
+  #+Name: some-value
+  #+begin_src emacs-lisp
+    (+ 100 55)
+  #+end_src
+
+  #+begin_src conf :tangle .config/some-app.conf :noweb yes :mkdirp yes
+    value=<<some-value()>>
+  #+end_src
+
+** Part 8:  Build your own IDE with lsp-mode
 *** Base setup
 - base packages are =lsp-mode= and =lsp-ui-mode=
 - =lsp-ivy= provides some symbol search functions
@@ -105,6 +129,45 @@ But normally we don't define these directly with `use-package` or `general.el`
 
 *** DAP mode
 - yeah maybe later
+
+** ON_HOLD Part 9: Terminal modes.
+** IN_PROGRESS Part 10: Dired
+*** Dired basics
+- it just calls =ls= internally
+- customise with =dired-listing-switches=
+- open files with =g SOMETHING= (see which key for the options available)
+- =(= toggles "high detail mode
+  
+*** marking/selection
+- mark with =m=, unmark with =u=, unmark all with =U=
+- =t= will invert the selection
+- =%m= to mark files by regex
+- =K= will kill marked files (hide them), refresh the buffer to see them again
+- =C= to copy file(s), =R= to rename/move file(s)
+- =C-M-j= is the =ivy-alt-done= command, can be useful when trying to rename and
+  
+*** dired keymaps
+- =delete-by-moving-to-trash= will tell dired to move to trash instead of entirely deleting
+- =Z= will compress or uncompress
+- with selected files, press =c= to compress. Type of archieve is determinded by the file extension you give it
+- =T= is touch/change timestamp, =M= is chmod, =O= is chown, =S= creates symlink
+- =S-RET= opens file in new split, keeping dired open
+- =M-RET= is the same as =S-RET= but leaves focus on dired window
+  
+*** TODO wdired
+- change filenames in place
+- activate with =C-x C-q= finish with =ZZ=
+- why isn't his keybinding working?
+
+*** new package: dired-single
+- replaces old dired buffers with new ones to keep buffer list tidier
+
+*** new package: all-the-icons-dired
+- adds icons
+
+*** TODO images
+- will be showed by default but =&= will open selected file in an external program
+- how do I return to =dired= after opening a file? =C-o= doesn't work (it goes to a different file)
 
 ** Misc Thoughts
 *** Org
@@ -142,3 +205,12 @@ Idea is a work in progress and doesn't enforce the heading spacing I want, but i
   ;; was that it opens a copy of the buffer.
   (org-export-to-buffer 'org (buffer-name))
 #+end_src
+
+*** Coping from EFS
+- [ ] remove =command-log-mode=
+- [ ] rename =efs= -> =jdr=
+- [ ] setup tree sitter for typescript
+- [ ] set up no-littering
+- [ ] setup checkbox masking so they look pretty
+- [ ] setup copy paste shortcuts (can I just use =C-c= in insert mode, and =C-v= in visual?
+- [ ] update =lsp-mode= to use =SPC l= or =C-l= for keybinds
